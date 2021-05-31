@@ -20,6 +20,7 @@ class FireAuth {
     var user = {
       "name": name,
       "phoneNumber": phone,
+      "password": pass,
     };
     var ref = FirebaseDatabase.instance.reference().child("users");
     ref.child(userID).set(user).then((user) {

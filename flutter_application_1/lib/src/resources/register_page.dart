@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/src/blocs/login_bloc.dart';
 import 'package:flutter_application_1/src/resources/dialog/loading_dialog.dart';
+import 'package:flutter_application_1/src/resources/dialog/msg_dialog.dart';
 import 'package:flutter_application_1/src/resources/home_page.dart';
 import 'package:flutter_application_1/src/resources/login_page.dart';
 
@@ -191,10 +192,7 @@ class _RegisterPageState extends State<RegisterPage> {
           LoadingDialog.hideLoadingDialog(context);
           Navigator.push(context, MaterialPageRoute(builder: gotoSignIn));
         }, (msg) {
-          // (msg) {
-          LoadingDialog.hideLoadingDialog(context);
-          Navigator.push(context, MaterialPageRoute(builder: gotoSignIn));
-          //   MsgDialog.showMsgDialog(context, "Sign up message", msg);
+          MsgDialog.showMsgDialog(context, "Sign up message", msg);
         });
       }
     });

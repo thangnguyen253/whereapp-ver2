@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/src/resources/search_page.dart';
 
 class RidePicker extends StatefulWidget {
   @override
@@ -25,7 +26,10 @@ class _RidePickerState extends State<RidePicker> {
             width: double.infinity,
             height: 50,
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => SearchPage()));
+              },
               child: SizedBox(
                 width: double.infinity,
                 height: double.infinity,

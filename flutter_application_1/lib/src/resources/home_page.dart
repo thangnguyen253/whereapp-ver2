@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
                 target: LatLng(21.036029, 105.782950),
                 zoom: 16.0,
               ),
-              destinationIcon: "",
+              destinationIcon: "/flutter_application_1/assets/pin.png",
             ),
             Positioned(
                 left: 0,
