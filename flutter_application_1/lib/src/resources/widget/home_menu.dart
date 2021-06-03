@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/src/firebase/firebase-auth.dart';
 
 class HomeMenu extends StatefulWidget {
   @override
@@ -6,6 +8,12 @@ class HomeMenu extends StatefulWidget {
 }
 
 class _HomeMenuState extends State<HomeMenu> {
+  FirebaseAuth auth = FirebaseAuth.instance;
+
+  void signOut() async {
+    await auth.signOut();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -45,11 +53,20 @@ class _HomeMenuState extends State<HomeMenu> {
             style: TextStyle(fontSize: 18, color: Color(0xff323643)),
           ),
         ),
-        ListTile(
-          leading: Image.asset("log-out.png"),
-          title: Text(
-            "Sign out",
-            style: TextStyle(fontSize: 18, color: Color(0xff323643)),
+        // ListTile(
+        //   leading: Image.asset("log-out.png"),
+        // title: Text(
+        //  "Sign out",
+        //  style: TextStyle(fontSize: 18, color: Color(0xff323643)),
+        //   ),
+        GestureDetector(
+          onTap: signOut,
+          child: ListTile(
+            leading: Image.asset("log-out.png"),
+            title: Text(
+              "Sign out",
+              style: TextStyle(fontSize: 18, color: Color(0xff323643)),
+            ),
           ),
         ),
       ],

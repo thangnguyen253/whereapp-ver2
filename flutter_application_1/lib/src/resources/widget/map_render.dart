@@ -1,5 +1,5 @@
 import 'dart:math';
-
+import 'package:wemapgl/utils/language_vi.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wemapgl/wemapgl.dart';
@@ -33,7 +33,7 @@ class _MapRenderState extends State<MapRender> {
   WeMapController? mapController;
   var mapKey = GlobalKey();
   GlobalKey<ChooseLocationState> _chooseKey = GlobalKey();
-  //LatLng? myLatLng;
+  LatLng? myLatLng;
   Color primaryColor = Color.fromRGBO(0, 113, 188, 1);
   Color primaryColorTransparent = Color.fromRGBO(0, 113, 188, 0);
   int indexOfTab = 0;
@@ -43,7 +43,7 @@ class _MapRenderState extends State<MapRender> {
   bool isController = false;
   bool visible = false;
   bool isYour = true;
-  //bool myLatLngEnabled = true;
+  bool myLatLngEnabled = true;
   String? placeName;
   double? paddingBottom;
   String? from;
@@ -56,6 +56,11 @@ class _MapRenderState extends State<MapRender> {
   }
 
   void onSelected() async {
+    //added
+    if (myLatLng == null && mapController != null)
+      myLatLng = await mapController!.requestMyLocationLatLng();
+    fromHomeStream.increment(false);
+
     if ((_originPlace == null &&
             _chooseKey.currentState != null &&
             _chooseKey.currentState!.ori != null) ||
@@ -85,8 +90,6 @@ class _MapRenderState extends State<MapRender> {
       mapController?.clearCircles();
       await WeMapDirections()
           .addCircle(_originPlace!.location!, mapController, '#d3d3d3');
-//      await WeMapDirections().addMarker(widget.originPlace.location, mapController, widget.originIcon);
-//      myLatLngEnabled = false;
     }
 
     if (_originPlace == null && _destinationPlace != null) {
@@ -96,7 +99,6 @@ class _MapRenderState extends State<MapRender> {
       mapController?.clearCircles();
       await WeMapDirections().addMarker(_destinationPlace!.location,
           mapController, "/flutter_application_1/assets/destination.png");
-//      myLatLngEnabled = false;
     }
 
     if (_originPlace != null && _destinationPlace != null) {
@@ -109,13 +111,16 @@ class _MapRenderState extends State<MapRender> {
       await WeMapDirections().animatedCamera(mapController, bounds);
       mapController?.clearLines();
       mapController?.clearCircles();
-//      await WeMapDirections().addMarker(widget.originPlace.location, mapController, widget.originIcon);
       await WeMapDirections().loadRoute(mapController!, _route, insRoute,
           rootPreview, visible, indexOfTab, from!, to!);
       mapController?.clearSymbols();
       await WeMapDirections().addMarker(_destinationPlace!.location,
           mapController, "/flutter_application_1/assets/destination.png");
 //      myLatLngEnabled = false;
+      if ((_originPlace?.description != wemap_yourLocation) &&
+          (_destinationPlace?.description != wemap_yourLocation)) {
+        isDrivingStream.increment(false);
+      }
     }
   }
 
@@ -143,7 +148,7 @@ class _MapRenderState extends State<MapRender> {
             initialCameraPosition:
                 const CameraPosition(target: LatLng(21.03, 105.78), zoom: 15.0),
             onStyleLoadedCallback: onSelected,
-            //myLocationEnabled: myLatLngEnabled,
+            myLocationEnabled: myLatLngEnabled,
             compassEnabled: true,
             compassViewMargins: Point(24, 550),
             onMapClick: (point, latlng, place) async {},
@@ -185,7 +190,7 @@ class _MapRenderState extends State<MapRender> {
                               padding: EdgeInsets.only(
                                   top: 0, left: 0, right: 0, bottom: 0),
                               child: ChooseLocation(
-                                //searchLocation: myLatLng,
+                                searchLocation: myLatLng,
                                 originPlace: _originPlace,
                                 destinationPlace: _destinationPlace,
                                 //originIcon: widget.originIcon,
@@ -230,10 +235,10 @@ class _MapRenderState extends State<MapRender> {
                                 pressedOpacity: 0.8,
                                 padding: EdgeInsets.all(0),
                                 child: Icon(
-                                  Icons.directions_car,
+                                  CupertinoIcons.car_detailed,
                                   color: indexOfTab == 0
                                       ? primaryColor
-                                      : Colors.blueGrey,
+                                      : Colors.black,
                                 ),
                                 onPressed: () async {
                                   setState(() {
@@ -282,10 +287,10 @@ class _MapRenderState extends State<MapRender> {
                                 pressedOpacity: 0.8,
                                 padding: EdgeInsets.all(0),
                                 child: Icon(
-                                  Icons.directions_bike,
+                                  Icons.motorcycle_sharp,
                                   color: indexOfTab == 1
                                       ? primaryColor
-                                      : Colors.blueGrey,
+                                      : Colors.black,
                                 ),
                                 onPressed: () async {
                                   setState(() {
