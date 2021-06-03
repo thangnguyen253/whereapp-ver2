@@ -11,7 +11,14 @@ class RouteItem {
   final bool? done;
 
   RouteItem(
-      {this.from, this.to, this.fromPointLatitude, this.fromPointLongitude, this.toPointLatitude, this.toPointLongitude, this.indexOfTab, this.done});
+      {this.from,
+      this.to,
+      this.fromPointLatitude,
+      this.fromPointLongitude,
+      this.toPointLatitude,
+      this.toPointLongitude,
+      this.indexOfTab,
+      this.done});
 
   toJSONEncodable() {
     Map<String, dynamic> m = {
@@ -93,7 +100,8 @@ class WeMapDirectionDetails extends StatefulWidget {
   WeMapDirectionDetailsState createState() => WeMapDirectionDetailsState();
 }
 
-class WeMapDirectionDetailsState extends State<WeMapDirectionDetails> with TickerProviderStateMixin {
+class WeMapDirectionDetailsState extends State<WeMapDirectionDetails>
+    with TickerProviderStateMixin {
   late RubberAnimationController _controller;
 
   ScrollController _scrollController = ScrollController();
@@ -117,7 +125,8 @@ class WeMapDirectionDetailsState extends State<WeMapDirectionDetails> with Ticke
         vsync: this,
         upperBoundValue: AnimationControllerValue(pixel: widget.upper),
         lowerBoundValue: AnimationControllerValue(pixel: widget.lower),
-        springDescription: SpringDescription.withDampingRatio(mass: 1, stiffness: Stiffness.HIGH, ratio: DampingRatio.NO_BOUNCY),
+        springDescription: SpringDescription.withDampingRatio(
+            mass: 1, stiffness: Stiffness.HIGH, ratio: DampingRatio.NO_BOUNCY),
         duration: Duration(milliseconds: 0))
       ..addListener(() {
         if (widget.onSlided != null) widget.onSlided!(_controller.value);
@@ -144,7 +153,8 @@ class WeMapDirectionDetailsState extends State<WeMapDirectionDetails> with Ticke
 
   @override
   Widget build(BuildContext context) {
-    appbarHeight = AppBar().preferredSize.height + MediaQuery.of(context).padding.top;
+    appbarHeight =
+        AppBar().preferredSize.height + MediaQuery.of(context).padding.top;
     return Stack(
       children: <Widget>[
         RubberBottomSheet(
@@ -157,43 +167,52 @@ class WeMapDirectionDetailsState extends State<WeMapDirectionDetails> with Ticke
         Positioned(
           child: AnimatedOpacity(
             opacity: (_controller.value * MediaQuery.of(context).size.height >
-                    MediaQuery.of(context).size.height - (75 + MediaQuery.of(context).padding.top))
+                    MediaQuery.of(context).size.height -
+                        (75 + MediaQuery.of(context).padding.top))
                 ? 1.0
                 : 0.0,
             duration: Duration(milliseconds: 300),
             child: Visibility(
               visible: (_controller.value * MediaQuery.of(context).size.height >
-                  MediaQuery.of(context).size.height - (75 + MediaQuery.of(context).padding.top)),
+                  MediaQuery.of(context).size.height -
+                      (75 + MediaQuery.of(context).padding.top)),
               child: Container(
-                  decoration: BoxDecoration(color: Colors.white, boxShadow: [BoxShadow(color: Colors.black38, blurRadius: 5)]),
+                  decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                    BoxShadow(color: Colors.black38, blurRadius: 5)
+                  ]),
                   width: double.infinity,
                   height: 75 + MediaQuery.of(context).padding.top,
-                  padding: EdgeInsets.only(top: 16 + MediaQuery.of(context).padding.top, left: 16, right: 16, bottom: 16),
+                  padding: EdgeInsets.only(
+                      top: 16 + MediaQuery.of(context).padding.top,
+                      left: 16,
+                      right: 16,
+                      bottom: 16),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       Expanded(
                         flex: 2,
                         child: Container(
-                          child: Icon(Icons.directions, color: Color.fromRGBO(0, 113, 188, 1)),
+                          child: Icon(Icons.directions,
+                              color: Color.fromRGBO(0, 113, 188, 1)),
                           margin: EdgeInsets.only(right: 16.0),
                           padding: EdgeInsets.only(right: 16.0),
                         ),
                       ),
-                      Expanded(
-                        flex: 7,
-                        child: Container(
-                          child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: [
-                            Text(
-                                (distanceStream.data! < 1000
-                                        ? distanceStream.data.toString() + ' ' + mText
-                                        : (((distanceStream.data! ~/ 100)) / 10).toString() + ' ' + kmText) +
-                                    ' ',
-                                style: Theme.of(context).textTheme.caption),
-                            Text('(' + widget.timeConvert!(timeStream.data!) + ')', style: Theme.of(context).textTheme.bodyText1)
-                          ]),
-                        ),
-                      ),
+                      // Expanded(
+                      //   flex: 7,
+                      //   child: Container(
+                      //     child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      //       Text(
+                      //           (distanceStream.data! < 1000
+                      //                   ? distanceStream.data.toString() + ' ' + mText
+                      //                   : (((distanceStream.data! ~/ 100)) / 10).toString() + ' ' + kmText) +
+                      //               ' ',
+                      //           style: Theme.of(context).textTheme.caption),
+                      //       Text('(' + widget.timeConvert!(timeStream.data!) + ')', style: Theme.of(context).textTheme.bodyText1)
+                      //     ]),
+                      //   ),
+                      // ),
                       // Expanded(
                       //   flex: 7,
                       //   child: Container(
@@ -208,9 +227,13 @@ class WeMapDirectionDetailsState extends State<WeMapDirectionDetails> with Ticke
                       Expanded(
                         flex: 7,
                         child: Container(
-                          padding: EdgeInsets.only(top: 0, left: 5, right: 0, bottom: 0),
+                          padding: EdgeInsets.only(
+                              top: 0, left: 5, right: 0, bottom: 0),
                           height: 40,
-                          child: Container(child: isDrivingStream.data == true ? _buttonNavigation() : _buttonPreview()),
+                          child: Container(
+                              child: isDrivingStream.data == true
+                                  ? _buttonNavigation()
+                                  : _buttonPreview()),
                         ),
                       ),
                     ],
@@ -233,8 +256,17 @@ class WeMapDirectionDetailsState extends State<WeMapDirectionDetails> with Ticke
     return Container(
         decoration: BoxDecoration(
             color: Colors.white,
-            boxShadow: widget.changeBackground! ? null : [BoxShadow(blurRadius: 8.0, color: Color.fromRGBO(0, 0, 0, 0.25))],
-            borderRadius: widget.changeBackground! ? null : BorderRadius.only(topLeft: Radius.circular(16.0), topRight: Radius.circular(16.0))),
+            boxShadow: widget.changeBackground!
+                ? null
+                : [
+                    BoxShadow(
+                        blurRadius: 8.0, color: Color.fromRGBO(0, 0, 0, 0.25))
+                  ],
+            borderRadius: widget.changeBackground!
+                ? null
+                : BorderRadius.only(
+                    topLeft: Radius.circular(16.0),
+                    topRight: Radius.circular(16.0))),
         child: _panel());
   }
 
@@ -261,7 +293,8 @@ class WeMapDirectionDetailsState extends State<WeMapDirectionDetails> with Ticke
                         Expanded(
                           flex: 2,
                           child: Container(
-                            child: Icon(Icons.directions, color: Color.fromRGBO(0, 113, 188, 1)),
+                            child: Icon(Icons.directions,
+                                color: Color.fromRGBO(0, 113, 188, 1)),
                             margin: EdgeInsets.only(right: 16.0),
                             padding: EdgeInsets.only(right: 16.0),
                           ),
@@ -270,15 +303,32 @@ class WeMapDirectionDetailsState extends State<WeMapDirectionDetails> with Ticke
                           flex: 7,
                           child: Container(
                             padding: EdgeInsets.only(left: 4),
-                            child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: [
-                              Text(
-                                  (distanceStream.data! < 1000
-                                          ? distanceStream.data.toString() + ' ' + mText
-                                          : (((distanceStream.data! ~/ 100)) / 10).toString() + ' ' + kmText) +
-                                      ' ',
-                                  style: Theme.of(context).textTheme.caption),
-                              Text('(' + widget.timeConvert!(timeStream.data!) + ')', style: Theme.of(context).textTheme.bodyText1)
-                            ]),
+                            child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                      (distanceStream.data! < 1000
+                                              ? distanceStream.data.toString() +
+                                                  ' ' +
+                                                  mText
+                                              : (((distanceStream.data! ~/
+                                                              100)) /
+                                                          10)
+                                                      .toString() +
+                                                  ' ' +
+                                                  kmText) +
+                                          ' ',
+                                      style:
+                                          Theme.of(context).textTheme.caption),
+                                  Text(
+                                      '(' +
+                                          widget
+                                              .timeConvert!(timeStream.data!) +
+                                          ')',
+                                      style:
+                                          Theme.of(context).textTheme.bodyText1)
+                                ]),
                           ),
                         ),
                         // Expanded(
@@ -296,11 +346,14 @@ class WeMapDirectionDetailsState extends State<WeMapDirectionDetails> with Ticke
                         Expanded(
                           flex: 7,
                           child: Container(
-                            padding: EdgeInsets.only(top: 0, left: 5, right: 0, bottom: 0),
+                            padding: EdgeInsets.only(
+                                top: 0, left: 5, right: 0, bottom: 0),
                             height: 40,
                             child: Container(
                               //decoration: _containerDecoration(),
-                              child: isDrivingStream.data == true ? _buttonNavigation() : _buttonPreview(),
+                              child: isDrivingStream.data == true
+                                  ? _buttonNavigation()
+                                  : _buttonPreview(),
                             ),
                           ),
                         ),
@@ -308,10 +361,12 @@ class WeMapDirectionDetailsState extends State<WeMapDirectionDetails> with Ticke
                     )),
                 secondChild: Container(height: 75),
                 duration: Duration(milliseconds: 300),
-                crossFadeState: !(_controller.value * MediaQuery.of(context).size.height >
-                        MediaQuery.of(context).size.height - (75 + MediaQuery.of(context).padding.top))
-                    ? CrossFadeState.showFirst
-                    : CrossFadeState.showSecond,
+                crossFadeState:
+                    !(_controller.value * MediaQuery.of(context).size.height >
+                            MediaQuery.of(context).size.height -
+                                (75 + MediaQuery.of(context).padding.top))
+                        ? CrossFadeState.showFirst
+                        : CrossFadeState.showSecond,
               ),
               Column(
                   children: insRouteStream.data!.map((ins) {
@@ -397,7 +452,9 @@ class WeMapDirectionDetailsState extends State<WeMapDirectionDetails> with Ticke
                 children.add(ListTile(
                   leading: icons,
                   title: Text(text),
-                  subtitle: Text(dis < 1000 ? dis.toString() + ' ' + mText : ((dis ~/ 100) / 10).toString() + ' ' + kmText),
+                  subtitle: Text(dis < 1000
+                      ? dis.toString() + ' ' + mText
+                      : ((dis ~/ 100) / 10).toString() + ' ' + kmText),
                   onTap: () {
 //                    setState(() {
 //                      widget.isFromDetail = true;
@@ -422,9 +479,11 @@ class WeMapDirectionDetailsState extends State<WeMapDirectionDetails> with Ticke
 
   Widget _buttonPreview() {
     return ElevatedButton(
-        child: Text(preview, style: TextStyle(fontSize: 14, color: Colors.white)),
+        child:
+            Text(preview, style: TextStyle(fontSize: 14, color: Colors.white)),
         style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
           primary: Color.fromRGBO(0, 113, 188, 1),
           onPrimary: Colors.grey,
         ),
@@ -445,7 +504,8 @@ class WeMapDirectionDetailsState extends State<WeMapDirectionDetails> with Ticke
     return ElevatedButton(
         child: Text(start, style: TextStyle(fontSize: 14, color: Colors.white)),
         style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
           primary: Color.fromRGBO(0, 113, 188, 1),
           onPrimary: Colors.grey,
         ),
@@ -468,9 +528,11 @@ class WeMapDirectionDetailsState extends State<WeMapDirectionDetails> with Ticke
 
   Widget _buttonShare() {
     return ElevatedButton(
-        child: Text(shareBtn, style: TextStyle(fontSize: 14, color: Colors.white)),
+        child:
+            Text(shareBtn, style: TextStyle(fontSize: 14, color: Colors.white)),
         style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
           primary: Color.fromRGBO(0, 113, 188, 1),
           onPrimary: Colors.grey,
         ),

@@ -9,24 +9,28 @@ class FireAuth {
         .createUserWithEmailAndPassword(email: username, password: pass)
         .then((user) {
       _createUser(user.user!.uid, phone, name, pass, onSuccess, onSignUpError);
-      print(user);
     }).catchError((err) {
+      //print("err: " + err.toString());
       _onSignUpErr(err.code, onSignUpError);
+      onSignUpError("err: " + err.toString());
     });
   }
 
   _createUser(String userID, String phone, String name, String pass,
       Function onSuccess, Function(String) onSignUpError) {
-    var user = {
-      "name": name,
-      "phoneNumber": phone,
-      "password": pass,
-    };
+    var user = Map<String, String>();
+    user["name"] = name;
+    user["phoneNumber"] = phone;
+    user["password"] = pass;
+
     var ref = FirebaseDatabase.instance.reference().child("users");
     ref.child(userID).set(user).then((user) {
       onSuccess();
     }).catchError((err) {
-      onSignUpError("Sign up failed, try again!");
+      print("err: " + err.toString());
+      onSignUpError("err: " + err.toString());
+    }).whenComplete(() {
+      print("Completed");
     });
   }
 
@@ -35,29 +39,34 @@ class FireAuth {
     _firebaseAuth
         .signInWithEmailAndPassword(email: username, password: pass)
         .then((user) {
-      print("on sign in success");
       onSuccess();
     }).catchError((err) {
-      onSignInError("Sign in failed, try again!");
+      //print("err: " + err.toString());
+      onSignInError("err: " + err.toString());
     });
   }
 
-  void _onSignUpErr(String code, Function(String) onRegisterError) {
+  void _onSignUpErr(String code, Function(String) onSignUpError) {
     print(code);
     switch (code) {
       case "ERROR_INVALID_EMAIL":
       case "ERROR_INVALID_CREDENTIAL":
-        onRegisterError("Invalid email");
+        onSignUpError("Invalid email");
         break;
       case "ERROR_EMAIL_ALREADY_IN_USE":
-        onRegisterError("Email has existed");
+        onSignUpError("Email has existed");
         break;
       case "ERROR_WEAK_PASSWORD":
-        onRegisterError("The password is not strong enough");
+        onSignUpError("The password is not strong enough");
         break;
       default:
-        onRegisterError("Sign up fail, please try again");
+        onSignUpError("Sign up fail, please try again");
         break;
+    }
+
+    Future<void> signOut() async {
+      print("signOut");
+      return _firebaseAuth.signOut();
     }
   }
 }

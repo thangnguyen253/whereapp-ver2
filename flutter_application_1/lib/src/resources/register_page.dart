@@ -190,9 +190,10 @@ class _RegisterPageState extends State<RegisterPage> {
         authBloc.signUp(_userController.text, _passController.text,
             _phoneController.text, _nameController.text, () {
           LoadingDialog.hideLoadingDialog(context);
-          Navigator.push(context, MaterialPageRoute(builder: gotoSignIn));
+          Navigator.push(context, MaterialPageRoute(builder: gotoHome));
         }, (msg) {
-          MsgDialog.showMsgDialog(context, "Sign up message", msg);
+          LoadingDialog.hideLoadingDialog(context);
+          MsgDialog.showMsgDialog(context, "Sign up", msg);
         });
       }
     });
