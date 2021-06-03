@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_application_1/src/resources/widget/home_menu.dart';
 import 'package:flutter_application_1/src/resources/widget/map_render.dart';
-import 'package:wemapgl/wemapgl.dart';
+import 'package:location_permissions/location_permissions.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -10,6 +10,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  void _pushPage() async {
+    final location = LocationPermissions();
+    final hasPermissions = await location.checkPermissionStatus();
+    if (hasPermissions != PermissionStatus.granted) {
+      await location.requestPermissions();
+    }
+  }
+
   var _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
@@ -40,6 +48,7 @@ class _HomePageState extends State<HomePage> {
                           print("Click");
                           // Scaffold.of(context).openDrawer();
                           _scaffoldKey.currentState!.openDrawer();
+                          _pushPage();
                         },
                         child: Image.asset("menu.png"),
                       ),

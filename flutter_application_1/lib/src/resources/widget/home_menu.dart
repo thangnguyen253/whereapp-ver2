@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/src/firebase/firebase-auth.dart';
+import 'package:location_permissions/location_permissions.dart';
 
 class HomeMenu extends StatefulWidget {
   @override
@@ -53,20 +54,11 @@ class _HomeMenuState extends State<HomeMenu> {
             style: TextStyle(fontSize: 18, color: Color(0xff323643)),
           ),
         ),
-        // ListTile(
-        //   leading: Image.asset("log-out.png"),
-        // title: Text(
-        //  "Sign out",
-        //  style: TextStyle(fontSize: 18, color: Color(0xff323643)),
-        //   ),
-        GestureDetector(
-          onTap: signOut,
-          child: ListTile(
-            leading: Image.asset("log-out.png"),
-            title: Text(
-              "Sign out",
-              style: TextStyle(fontSize: 18, color: Color(0xff323643)),
-            ),
+        ListTile(
+          leading: Image.asset("log-out.png"),
+          title: Text(
+            "Sign out",
+            style: TextStyle(fontSize: 18, color: Color(0xff323643)),
           ),
         ),
       ],

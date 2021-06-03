@@ -161,7 +161,7 @@ class _MapRenderState extends State<MapRender> {
             right: 0,
             child: Container(
               padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-              color: Colors.transparent,
+              color: Colors.transparent.withOpacity(0.05),
               child: Column(
                 children: <Widget>[
                   Row(
@@ -176,7 +176,9 @@ class _MapRenderState extends State<MapRender> {
                             _chooseKey.currentState!.locationSwap(
                                 _originPlace!, _destinationPlace!);
                           },
-                          icon: Icon(Icons.swap_vert, color: Colors.black),
+                          icon: Icon(
+                              CupertinoIcons.arrow_up_arrow_down_square_fill,
+                              color: Colors.black),
                         ),
                       ),
                       Container(
@@ -193,13 +195,10 @@ class _MapRenderState extends State<MapRender> {
                                 searchLocation: myLatLng,
                                 originPlace: _originPlace,
                                 destinationPlace: _destinationPlace,
-                                //originIcon: widget.originIcon,
-                                //destinationIcon: widget.destinationIcon,
                                 onSelectOriginPlace: (place) =>
                                     setState(() => _originPlace = place),
                                 onSelectDestinationPlace: (place) =>
                                     setState(() => _destinationPlace = place),
-                                /*callback: (val) => setState(() => address = val),*/
                                 key: _chooseKey,
                                 onSelected: onSelected,
                               ),
@@ -328,7 +327,7 @@ class _MapRenderState extends State<MapRender> {
             ),
           ),
           Positioned(
-            bottom: 48,
+            bottom: 98,
             right: 0,
             left: 0,
             height: 50,
@@ -354,7 +353,7 @@ class _MapRenderState extends State<MapRender> {
                     ])),
           ),
           Positioned(
-            bottom: 0,
+            bottom: 50,
             left: 0,
             right: 0,
             child: SizedBox(
