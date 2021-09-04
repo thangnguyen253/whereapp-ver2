@@ -34,26 +34,29 @@ class _LoginPageState extends State<LoginPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 80, 0, 80),
+                padding: const EdgeInsets.fromLTRB(0, 80, 0, 60),
                 child: Center(
                   child: Container(
-                    width: 70,
-                    height: 70,
+                    width: 100,
+                    height: 100,
                     padding: EdgeInsets.all(15),
                     decoration: BoxDecoration(
-                        shape: BoxShape.circle, color: Color(0xffd8d8d8)),
-                    child: FlutterLogo(),
+                        shape: BoxShape.circle,
+                        color: Colors.lightBlue.shade100),
+                    child: Image.asset(
+                      "car.png",
+                    ),
                   ),
                 ),
               ),
               Center(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 60),
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
                   child: Text("Hello, Welcome to WhereApp",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
-                          fontSize: 25)),
+                          fontSize: 22)),
                 ),
               ),
               Padding(

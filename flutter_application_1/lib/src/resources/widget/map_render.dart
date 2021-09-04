@@ -1,4 +1,7 @@
 import 'dart:math';
+import 'package:flutter_application_1/src/model/directionHistory.dart';
+import 'package:flutter_application_1/src/resources/dialog/moving-dialog.dart';
+import 'package:flutter_application_1/src/resources/history-page.dart';
 import 'package:wemapgl/utils/language_vi.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -44,12 +47,13 @@ class _MapRenderState extends State<MapRender> {
   bool visible = false;
   bool isYour = true;
   bool myLatLngEnabled = true;
-  String? placeName;
   double? paddingBottom;
   String? from;
   String? to;
   WeMapPlace? _originPlace;
   WeMapPlace? _destinationPlace;
+  List<DirectionHistory> places = <DirectionHistory>[];
+  DirectionHistory placeAdd = DirectionHistory("from", "to", 0, 0, 0, 0, 0, 0);
 
   void _onMapCreated(WeMapController controller) async {
     mapController = controller;
@@ -145,8 +149,9 @@ class _MapRenderState extends State<MapRender> {
         children: <Widget>[
           WeMap(
             onMapCreated: _onMapCreated,
-            initialCameraPosition:
-                const CameraPosition(target: LatLng(21.03, 105.78), zoom: 15.0),
+            initialCameraPosition: const CameraPosition(
+                target: LatLng(21.416056878745728, 106.27948127054628),
+                zoom: 15.0),
             onStyleLoadedCallback: onSelected,
             myLocationEnabled: myLatLngEnabled,
             compassEnabled: true,
@@ -195,10 +200,23 @@ class _MapRenderState extends State<MapRender> {
                                 searchLocation: myLatLng,
                                 originPlace: _originPlace,
                                 destinationPlace: _destinationPlace,
-                                onSelectOriginPlace: (place) =>
-                                    setState(() => _originPlace = place),
+                                onSelectOriginPlace: (place) => setState(() {
+                                  _originPlace = place;
+                                  placeAdd.from = _originPlace!.placeName!;
+                                  placeAdd.fromLat =
+                                      _originPlace!.location!.latitude;
+                                  placeAdd.fromLng =
+                                      _originPlace!.location!.longitude;
+                                }),
                                 onSelectDestinationPlace: (place) =>
-                                    setState(() => _destinationPlace = place),
+                                    setState(() {
+                                  _destinationPlace = place;
+                                  placeAdd.to = _destinationPlace!.placeName!;
+                                  placeAdd.toLat =
+                                      _destinationPlace!.location!.latitude;
+                                  placeAdd.toLng =
+                                      _destinationPlace!.location!.longitude;
+                                }),
                                 key: _chooseKey,
                                 onSelected: onSelected,
                               ),
@@ -260,8 +278,10 @@ class _MapRenderState extends State<MapRender> {
                                       tripDistance =
                                           WeMapDirections().getDistance(json);
                                       price = tripDistance * 25000 / 1000;
+                                      placeAdd.price = price;
                                       tripTime =
                                           WeMapDirections().getTime(json);
+                                      placeAdd.type = indexOfTab;
                                     });
                                   }
                                 }),
@@ -312,8 +332,10 @@ class _MapRenderState extends State<MapRender> {
                                       tripDistance =
                                           WeMapDirections().getDistance(json);
                                       price = tripDistance * 10000 / 1000;
+                                      placeAdd.price = price;
                                       tripTime =
                                           WeMapDirections().getTime(json);
+                                      placeAdd.type = indexOfTab;
                                     });
                                   }
                                 }),
@@ -363,14 +385,18 @@ class _MapRenderState extends State<MapRender> {
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(
                         Colors.lightBlueAccent)),
-                onPressed: () {},
+                onPressed: () => setState(() {
+                  places.add(placeAdd);
+                  MovingDialog.showMovingDialog(
+                      context, "Moving.....", places.last);
+                }),
                 child: Text(
                   "Confirm Pickup",
                   style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     ));

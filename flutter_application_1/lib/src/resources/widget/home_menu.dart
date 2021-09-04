@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/src/firebase/firebase-auth.dart';
-import 'package:location_permissions/location_permissions.dart';
+import 'package:flutter_application_1/src/model/directionHistory.dart';
+import 'package:flutter_application_1/src/resources/history-page.dart';
+import 'package:flutter_application_1/src/resources/info-page.dart';
 
 class HomeMenu extends StatefulWidget {
   @override
@@ -10,23 +11,33 @@ class HomeMenu extends StatefulWidget {
 
 class _HomeMenuState extends State<HomeMenu> {
   FirebaseAuth auth = FirebaseAuth.instance;
-
+  var key = new GlobalKey();
   void signOut() async {
     await auth.signOut();
   }
 
+  DirectionHistory place = DirectionHistory("From", "to", 0, 0, 0, 0, 0, 0);
   @override
   Widget build(BuildContext context) {
     return ListView(
       children: <Widget>[
         ListTile(
-          leading: Image.asset("user.png"),
-          title: Text(
-            "Profile",
-            style: TextStyle(fontSize: 18, color: Color(0xff323643)),
-          ),
-        ),
+            leading: Image.asset("user.png"),
+            title: Text(
+              "Profile",
+              style: TextStyle(fontSize: 18, color: Color(0xff323643)),
+            ),
+            onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Info()),
+                )),
         ListTile(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => HistoryPage(key, place)));
+          },
           leading: Image.asset("history.png"),
           title: Text(
             "History",
